@@ -2,10 +2,9 @@ import React, { Component } from "react";
 
 class Counter extends Component {
   //Counter is object
-  state = {
-    count: 0,
-    tags: []
-  };
+  // state = {
+  //   value: this.props.counter.value //passing data from other component
+  // };
   renderTags() {
     if (this.state.tags.length === 0) return <p>There are no tags!</p>;
     return (
@@ -16,49 +15,42 @@ class Counter extends Component {
       </ul>
     );
   }
-  // constructor() {
-  //   super();
-  //   this.handleIncrement = this.handleIncrement.bind(this); // this refers Counter object
-  // }
-  handleIncrement = product => {
-    //product is an arguement
-    console.log(product);
-    //console.log("incremented clicked", this); // this refers current ounter object
-    this.setState({ count: this.state.count + 1 }); // tell React that state of this component is going to change. React schedules a call, asynchronous call (happen in future)
-  };
+  // handleIncrement = product => {
+  //   //product is an arguement
+  //   console.log(product);
+  //   //console.log("incremented clicked", this); // this refers current counter object
+  //   this.setState({ value: this.state.value + 1 }); // tell React that state of this component is going to change. React schedules a call, asynchronous call (happen in future)
+  // };
+
   render() {
-    // return (
-    //   <div>
-    //     {this.state.tags.length === 0 && "Please create a new tag!"}
-    //     {this.renderTags()}
-    //   </div>
-    // );
     return (
       <div>
+        {this.props.counter.children}
         <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
         <button
-          onClick={() => this.handleIncrement({ id: 1 })} // id:1 is an arguement (product) passing through an event handler
+          onClick={() => this.props.onIncrement(this.props.counter)} // id:1 is an arguement (product) passing through an event handler
           className="btn btn-secondary btn-sm"
         >
           Increment
         </button>
-        <ul>
-          {this.state.tags.map(tag => (
-            <li key={tag}>{tag}</li>
-          ))}
-        </ul>
+        <button
+          onClick={() => this.props.onDelete(this.props.counter.id)} //
+          className="btn btn-danger btn-sm m-2"
+        >
+          Delete
+        </button>
       </div>
     );
   }
   getBadgeClasses() {
     let classes = "badge m-2 badge-";
-    classes += this.state.count === 0 ? "warning" : "primary";
+    classes += this.props.counter.value === 0 ? "warning" : "primary";
     return classes;
   }
 
   formatCount() {
-    const { count } = this.state;
-    return count === 0 ? "zero" : count;
+    const { value } = this.props.counter;
+    return value === 0 ? "zero" : value;
   }
 }
 
